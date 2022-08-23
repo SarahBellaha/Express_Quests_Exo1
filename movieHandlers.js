@@ -45,8 +45,29 @@ const addMovie = (req, res) => {
     });
 };
 
+const updateMovie = (req, res) => {
+  const {title, director, year, color, duration} = req.body;
+  const id = parseInt(req.params.id);
+
+  database
+    .query(`UPDATE movies SET title = ?, director = ?, year = ?, color = ?, duration = ? WHERE id= ?`, 
+      [title, director, year, color, duration, id])
+      .then(([result]) => {
+        if (result.affectedRows === 0) {
+          res.status(404).send("Not Found");
+        } else {
+          res.sendStatus(204);
+        }
+      })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error saving the movie");
+    });
+};
+
 module.exports = {
   getMovies,
   getMovieById,
-  addMovie
+  addMovie,
+  updateMovie
 };
