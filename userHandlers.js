@@ -20,7 +20,7 @@ const getUsers = (req, res) => {
     database
         .query(sql, sqlValues)
         .then(([users]) => {
-        res.status(200).json(users);
+        res.status(200).sendFile(users);
     })
     .catch((err) => {
         console.error(err);
@@ -47,13 +47,14 @@ const getUserById = (req, res) => {
 };
 
 const addUser = (req, res) => {
-const {firstname, lastname, email, city, language} = req.body;
+const {firstname, lastname, email, city, language, hashedPassword} = req.body;
+console.log(req.body, "req.body")
 
 database
-    .query("INSERT INTO users (firstname, lastname, email, city, language) VALUES (?,?,?,?,?)", 
-        [firstname, lastname, email, city, language])
+    .query("INSERT INTO users (firstname, lastname, email, city, language, hashedPassword) VALUES (?,?,?,?,?,?)", 
+        [firstname, lastname, email, city, language, hashedPassword])
     .then(([result]) => {
-        console.log(result)
+        console.log(result,"result")
         res.location(`/api/users/${result.insertId}`).status(201).send("Success!")
     })
     .catch((err) => {

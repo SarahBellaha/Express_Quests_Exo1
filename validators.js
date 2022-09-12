@@ -14,6 +14,7 @@ const userSchema = Joi.object({
     email: Joi.string().email().max(255).required(),
     city: Joi.string().max(255),
     language: Joi.string().max(255).required(),
+    password: Joi.string().required(),
 });
 
 const validateMovie = (req, res, next) => {
