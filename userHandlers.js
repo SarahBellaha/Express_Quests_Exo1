@@ -1,7 +1,7 @@
 const database = require("./database");
 
 const getUsers = (req, res) => {
-    let sql = "select * from users";
+    let sql = "select firstname, lastname, email, city, language from users";
     const sqlValues = [];
 
     if(req.query.city != null) {
@@ -16,11 +16,12 @@ const getUsers = (req, res) => {
         sql += " where language = ?";
         sqlValues.push(req.query.language);
     }
+    console.log(sql, sqlValues);
 
     database
         .query(sql, sqlValues)
         .then(([users]) => {
-        res.status(200).sendFile(users);
+        res.status(200).send(users);
     })
     .catch((err) => {
         console.error(err);
